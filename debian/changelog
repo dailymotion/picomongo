@@ -1,0 +1,23 @@
+picomongo (0.4-1~karmic1) karmic-dc; urgency=low
+
+  * Bug fix
+
+ -- Sebastien Estienne <sebastien.estienne@gmail.com>  Tue, 31 Jan 2012 11:42:30 +0100
+
+picomongo (0.3-1~karmic1) karmic-dc; urgency=low
+
+  * Bug fix
+
+ -- Sebastien Estienne <sebastien.estienne@gmail.com>  Fri, 13 Jan 2012 11:46:11 +0100
+
+picomongo (0.2-1~karmic1) karmic-dc; urgency=low
+
+  * New release
+
+ -- Sebastien Estienne <sebastien.estienne@gmail.com>  Thu, 12 Jan 2012 17:33:38 +0100
+
+picomongo (0.1-1~karmic1) karmic-dc; urgency=low
+
+  * Initial release
+
+ -- Sebastien Estienne <sebastien.estienne@gmail.com>  Wed, 16 Nov 2011 16:33:57 +0100
