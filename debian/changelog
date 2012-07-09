@@ -1,3 +1,9 @@
+picomongo (0.6-1~karmic1) karmic-dc; urgency=low
+
+  * Add support for ReplicaSet
+
+ -- Sebastien Estienne <sebastien.estienne@gmail.com>  Mon, 25 Jun 2012 10:51:08 +0200
+
 picomongo (0.5-1~karmic1) karmic-dc; urgency=low
 
   * Bug fix

@@ -1,6 +1,7 @@
 from copy import copy, deepcopy
 
 import pymongo
+from pymongo import ReadPreference
 from pymongo.errors import InvalidOperation, OperationFailure
 from pymongo.cursor import Cursor as PymongoCursor
 
@@ -136,7 +137,7 @@ class Document(dict):
         if not self.get('_id'):
             raise InvalidOperation('You cannot reload an unsaved document.')
 
-        doc = self.col.find_one({'_id': self._id})
+        doc = self.col.find_one({'_id': self._id}, read_preference=ReadPreference.PRIMARY)
 
         if not doc:
             raise OperationFailure('Document is no more present in DB.')

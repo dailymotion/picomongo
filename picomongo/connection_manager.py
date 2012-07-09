@@ -5,6 +5,10 @@ access a shared state ConnectionManager.
 from collections import namedtuple
 
 from pymongo import Connection
+try:
+    from pymongo import ReplicaSetConnection
+except ImportError:
+    ReplicaSetConnection = Connection
 
 from exceptions import NotConfiguredYet
 
@@ -54,7 +58,7 @@ class _ConnectionManager(object):
 
         #Default
         self._default_con_uri = default.get('uri', self._default_con_uri)
-        con = Connection(self._default_con_uri)
+        con = self._get_connection(self._default_con_uri)
 
         self._default_db_name = default.get('db', self._default_db_name)
         db = con[self._default_db_name]
@@ -65,6 +69,14 @@ class _ConnectionManager(object):
         for name, document_config in config.iteritems():
             self._gen_config(name, document_config)
 
+    @staticmethod
+    def _get_connection(connection_uri):
+        if 'replicaSet=' in connection_uri:
+            con = ReplicaSetConnection(connection_uri)
+        else:
+            con = Connection(connection_uri)
+        return con
+
     def _gen_config(self, name, config=None):
         """Gen a config for a specified document name, use default values if
         necessary.
@@ -72,7 +84,7 @@ class _ConnectionManager(object):
         if config == None:
             config = {}
 
-        connection = Connection(config.get('uri', self._default_con_uri))
+        connection = self._get_connection(config.get('uri', self._default_con_uri))
         db = connection[config.get('db', self._default_db_name)]
         col = db[config.get('col')] if config.get('col') else None
         self._configurations[name] = CONFIG(connection, db, col)
