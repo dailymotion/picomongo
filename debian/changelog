@@ -1,3 +1,9 @@
+picomongo (0.6-1~precise1) precise-dc; urgency=low
+
+  * Precise
+
+ -- Sebastien Estienne <sebastien.estienne@gmail.com>  Sun, 09 Sep 2012 14:17:49 +0200
+
 picomongo (0.6-1~karmic1) karmic-dc; urgency=low
 
   * Add support for ReplicaSet
