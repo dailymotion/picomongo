@@ -1,11 +1,11 @@
 import unittest
 
 import pymongo
-import pymongo.objectid
 from mock import patch, Mock, sentinel
 
+from bson.objectid import ObjectId
+
 from pymongo import Connection
-from pymongo.objectid import ObjectId
 from pymongo.database import Database
 from pymongo.collection import Collection
 from pymongo.errors import InvalidOperation, DuplicateKeyError, OperationFailure
@@ -74,7 +74,7 @@ class DocumentPersistenceBaseTestCase(unittest.TestCase):
 
         inserted_id = self.collection.insert(self.document)
 
-        self.assertTrue(isinstance(self.document._id, pymongo.objectid.ObjectId))
+        self.assertTrue(isinstance(self.document._id, ObjectId))
 
         self.assertEqual(inserted_id, self.document._id)
         self.assertEqual(self.collection.find_one(), {'attribute': 'value', '_id': self.document._id})
@@ -204,7 +204,7 @@ class DocumentDBMethodsTestCase(unittest.TestCase):
 
     def test_reload_invalid_id(self):
         user = UserDocument()
-        user['_id'] = pymongo.objectid.ObjectId('1'*24)
+        user['_id'] = ObjectId('1'*24)
 
         self.assertRaises(OperationFailure, user.reload)
 
