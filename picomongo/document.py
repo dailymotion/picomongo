@@ -125,6 +125,8 @@ class Document(dict):
             else:
                 fields = fields[0]
 
+            if 'background' not in index:
+                index['background'] = True
             results.append(cls.col.ensure_index(fields, **index))
         return results
 

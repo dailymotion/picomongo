@@ -311,7 +311,7 @@ class DocumentIndexesTestCase(unittest.TestCase):
             mock_ensure_index = mock_col.ensure_index
             SimpleIndex.generate_index()
 
-        self.assertEqual(mock_ensure_index.call_args_list, [Call('something')])
+        self.assertEqual(mock_ensure_index.call_args_list, [Call('something', background=True)])
 
     def test_simple_descending_index(self):
         index = {'fields': ('-something',)}
@@ -323,7 +323,7 @@ class DocumentIndexesTestCase(unittest.TestCase):
             SimpleIndex.generate_index()
 
         call_indexes = [('something', pymongo.DESCENDING)]
-        self.assertEqual(mock_ensure_index.call_args_list, [Call(call_indexes)])
+        self.assertEqual(mock_ensure_index.call_args_list, [Call(call_indexes, background=True)])
 
     def test_multiple_index(self):
         index = {'fields': ('something', 'something_else')}
@@ -336,7 +336,7 @@ class DocumentIndexesTestCase(unittest.TestCase):
 
         call_indexes = [('something', pymongo.ASCENDING),
                         ('something_else', pymongo.ASCENDING)]
-        self.assertEqual(mock_ensure_index.call_args_list, [Call(call_indexes)])
+        self.assertEqual(mock_ensure_index.call_args_list, [Call(call_indexes, background=True)])
 
     def test_mutliple_combined(self):
         index = {'fields': ('something', '-something_else')}
@@ -349,10 +349,40 @@ class DocumentIndexesTestCase(unittest.TestCase):
 
         call_indexes = [('something', pymongo.ASCENDING),
                         ('something_else', pymongo.DESCENDING)]
-        self.assertEqual(mock_ensure_index.call_args_list, [Call(call_indexes)])
+        self.assertEqual(mock_ensure_index.call_args_list, [Call(call_indexes, background=True)])
 
     def test_additionnals_args(self):
         index = {'fields': ('something',), 'unique': True, 'ttl': 3600 * 24}
+
+        SimpleIndex.indexes = [index]
+
+        with patch.object(SimpleIndex, 'col') as mock_col:
+            mock_ensure_index = mock_col.ensure_index
+            SimpleIndex.generate_index()
+
+        index.pop('fields')
+        index['background'] = True
+        self.assertEqual(
+            mock_ensure_index.call_args_list,
+            [Call('something', **index)])
+
+    def test_default_background(self):
+        index = {'fields': ('something',), 'unique': True, 'ttl': 3600 * 24}
+
+        SimpleIndex.indexes = [index]
+
+        with patch.object(SimpleIndex, 'col') as mock_col:
+            mock_ensure_index = mock_col.ensure_index
+            SimpleIndex.generate_index()
+
+        index.pop('fields')
+        index['background'] = True
+        self.assertEqual(
+            mock_ensure_index.call_args_list,
+            [Call('something', **index)])
+
+    def test_override_background(self):
+        index = {'fields': ('something',), 'unique': True, 'background': False}
 
         SimpleIndex.indexes = [index]
 
@@ -370,9 +400,12 @@ class DocumentIndexesTestCase(unittest.TestCase):
 
         SimpleIndex.indexes = [index]
 
+        def callable_ensure_index(*args, **kwargs):
+            return args[0]
+
         with patch.object(SimpleIndex, 'col') as mock_col:
             mock_ensure_index = mock_col.ensure_index
-            mock_ensure_index.side_effect = lambda x: x
+            mock_ensure_index.side_effect = callable_ensure_index
             results = SimpleIndex.generate_index()
 
         self.assertEqual(results, ['something'])
@@ -390,7 +423,6 @@ class DocumentIndexesTestCase(unittest.TestCase):
         s2 = SimpleIndex()
         s2.something = 'something'
         self.assertRaises(DuplicateKeyError, s2.save, safe=True)
-
 
     def test_multiple_generate(self):
         SimpleIndex.generate_index()
