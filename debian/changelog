@@ -2,7 +2,7 @@ picomongo (0.7-1~precise1) precise-dc; urgency=low
 
   * ensure_index background parameter is True by default
 
- -- Jerome Clerc <jerome.clerc@dailymotion.com>  Wed, 27 Feb 2013 17:13:47 +0100
+ -- Sebastien Estienne <sebastien.estienne@gmail.com>  Thu, 28 Feb 2013 15:22:17 +0100
 
 picomongo (0.6-1~precise1) precise-dc; urgency=low
 
