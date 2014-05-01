@@ -1,9 +1,10 @@
 from copy import copy, deepcopy
 
 import pymongo
-from pymongo import ReadPreference
+
 from pymongo.errors import InvalidOperation, OperationFailure
 from pymongo.cursor import Cursor as PymongoCursor
+from pymongo.read_preferences import ReadPreference
 
 from exceptions import ValidationError
 from utils import CMProxy, CollectionDescriptor

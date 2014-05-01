@@ -1,3 +1,9 @@
+picomongo (0.8-1~precise1) precise-dc; urgency=low
+
+  * Read preference to PRIMARY_PREFERED
+
+ -- Sebastien Estienne <sebastien.estienne@gmail.com>  Sat, 17 Aug 2013 15:23:30 +0200
+
 picomongo (0.7-1~precise1) precise-dc; urgency=low
 
   * ensure_index background parameter is True by default

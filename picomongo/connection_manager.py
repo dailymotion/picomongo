@@ -5,10 +5,8 @@ access a shared state ConnectionManager.
 from collections import namedtuple
 
 from pymongo import Connection
-try:
-    from pymongo import ReplicaSetConnection
-except ImportError:
-    ReplicaSetConnection = Connection
+from pymongo import ReplicaSetConnection
+from pymongo.read_preferences import ReadPreference
 
 from exceptions import NotConfiguredYet
 
@@ -72,7 +70,7 @@ class _ConnectionManager(object):
     @staticmethod
     def _get_connection(connection_uri):
         if 'replicaSet=' in connection_uri:
-            con = ReplicaSetConnection(connection_uri)
+            con = ReplicaSetConnection(connection_uri, read_preference=ReadPreference.PRIMARY_PREFERRED)
         else:
             con = Connection(connection_uri)
         return con
