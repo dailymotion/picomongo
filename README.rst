@@ -3,6 +3,12 @@ Picomongo
 
 Faster than minimongo, lighter than micromongo, please welcome picomongo, the ultimate Mongo ODM made by Dailymotion.
 
+Installing
+==========
+
+    pip install git+https://github.com/dailymotion/picomongo
+
+
 Getting started
 ===============
 
